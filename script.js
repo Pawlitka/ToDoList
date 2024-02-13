@@ -1,35 +1,38 @@
-const inputBox = document.getElementById("input-box");
-const listContainer = document.getElementById("list-container");
-// const btnAdd = document.getElementById("btnAdd");
-// const btnAdd = .addEventListener("btnAdd");
+const INPUT_BOX = document.getElementById("input-box");
+const LIST_CONTAINER = document.getElementById("list-container");
+const BTN_ADD = document.querySelector(".btnAdd");
 
-function addTask(){
-    if(inputBox.value === ''){
-        alert("You must write something!");
+INPUT_BOX.addEventListener('keyup', handleOnKeyUpOfAddInput);
+BTN_ADD.addEventListener('click', addTask);
+
+loadSavedData();
+
+function handleOnKeyUpOfAddInput(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        BTN_ADD.click();
     }
-    else{
-        let li = document.createElement("li");
-        li.innerHTML = inputBox.value;
-        listContainer.appendChild(li);
-        let span = document.createElement("span");
-        span.innerHTML = "\u00d7";
-        li.appendChild(span);
-    }
-    inputBox.value = "";
-    saveData();
-
-
-
-    // const btnAdd= document.getElementById("btnAdd")
-    // listContainer.addEventListener('keyup', function (e){
-    //         event.preventDefault();
-    //         if (event.keyCode === 13){
-    //         document.getElementById("btnAdd").click();
-    //     }
-    // });
 }
 
-listContainer.addEventListener("click", function (e){
+function addTask(){
+    if(INPUT_BOX.value === '') {
+        alert("You must write something!");
+    }
+    else {
+        let liElement = document.createElement("li");
+        liElement.innerHTML = INPUT_BOX.value;
+        LIST_CONTAINER.appendChild(liElement);
+        let span = document.createElement("span");
+        span.innerHTML = "\u00d7";
+        liElement.appendChild(span);
+    }
+    INPUT_BOX.value = "";
+    saveData();
+}
+
+
+
+LIST_CONTAINER.addEventListener("click", function (e){
         if(e.target.tagName === "LI"){
             e.target.classList.toggle("checked");
             saveData();
@@ -41,9 +44,9 @@ listContainer.addEventListener("click", function (e){
 }, false);
 
 function  saveData(){
-    localStorage.setItem("data", listContainer.innerHTML);
+    localStorage.setItem("data", LIST_CONTAINER.innerHTML);
 }
-function showTask(){
-    listContainer.innerHTML = localStorage.getItem("data");
+
+function loadSavedData(){
+    LIST_CONTAINER.innerHTML = localStorage.getItem("data");
 }
-showTask();
